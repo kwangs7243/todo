@@ -42,17 +42,35 @@ class todo:
         return
     def sorted_data(self):
         data = self.get_data()
-        sort_column = self.state["sort_column"]
-        sort_direction = self.state["sort_direction"]
+        column = self.state["sort_column"]
+        direction = self.state["sort_direction"]
         if not data:
             return
-        
+        if column is not None:
+            if direction == "asc":
+                sorted_data = sorted(data,key=lambda x:x[column],reverse=False)
+            else:
+                sorted_data = sorted(data,key=lambda x:x[column],reverse=True)
+        return sorted_data
     def set_sort(self,column):
-        pass
+        if column != self.state["sort_column"]:
+            self.state["sort_column"] = column
+            self.state["sort_direction"] = "asc"
+            return
+        if self.state["sort_direction"] == "asc":
+            self.state["sort_direction"] = "desc"
+            return
     def keyword_data(self):
-        pass
+        data = self.get_data()
+        if not data:
+            return
+        keyword = self.state["keyword"]
+        keyword_data = [dic for dic in data if keyword in dic["content"]]
+        return keyword_data
     def set_keyword(self,keyword):
-        pass
+        keyword = keyword.strip()
+        self.state["keyword"] = keyword
+        return
     def delete_data(self,idx):
         pass
     def set_completed(self,idx):
