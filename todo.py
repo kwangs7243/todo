@@ -1,5 +1,5 @@
 import datetime as dt
-class todo:
+class TodoMan:
     def __init__(self):
         self.state = {
             "sort_column" : None,
@@ -11,25 +11,25 @@ class todo:
     def add_todo(self,content):
         date = dt.datetime.now().strftime("%y-%m-%d")
         content = content.strip()
-        info= {
+        todo= {
             "date" : date,
             "content" : content,
             "category" : "active",
             "deleted" : False,
         }
-        self.todos.append(info)
+        self.todos.append(todo)
         return
     def get_data(self):
         if not self.todos:
             return
-        data=[]
+        info=[]
         for idx,dic in enumerate(self.todos):
             new_dic = dic.copy()
             new_dic["original_idx"] = idx
             if dic["deleted"] == False:
-                data.append(new_dic)
-        return data
-    def set_category(self,category):
+                info.append(new_dic)
+        return info
+    def set_filter_category(self,category):
         self.state["category"] = category
         return
     def set_sort(self,column):
@@ -44,14 +44,14 @@ class todo:
         keyword = keyword.strip()
         self.state["keyword"] = keyword
         return
-    def category_data(self,data):
-        category_data = data
+    def category_data(self,info):
+        category_data = info
         category = self.state["category"]
         if category != "all":
             category_data = [dic for dic in category_data if dic["category"] == category]
         return category_data
-    def sorted_data(self,data):
-        sorted_data = data
+    def sorted_data(self,info):
+        sorted_data = info
         column = self.state["sort_column"]
         direction = self.state["sort_direction"]
         if column is not None:
@@ -60,8 +60,8 @@ class todo:
             else:
                 sorted_data = sorted(sorted_data,key=lambda x:x[column],reverse=True)
         return sorted_data
-    def keyword_data(self,data):
-        keyword_data = data
+    def keyword_data(self,info):
+        keyword_data = info
         keyword = self.state["keyword"]
         if keyword is not None:
             keyword_data = [dic for dic in keyword_data if keyword in dic["content"]]
@@ -73,7 +73,7 @@ class todo:
             return
         self.todos[original_idx]["deleted"] = True
         return
-    def set_category(self,number):
+    def toggle_category(self,number):
         try:
             original_idx = int(number) - 1
         except:

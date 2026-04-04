@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo Manager</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            width: 250px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-left: 5px;
+        }
+
+        .todo-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .controls {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Todo Manager</h1>
+
+<!-- 🔹 할일 추가 -->
+<form action="/add" method="POST">
+    <input type="text" name="content" placeholder="할일 입력">
+    <button type="submit">추가</button>
+</form>
+
+<!-- 🔹 검색 -->
+<form action="/search" method="POST">
+    <input type="text" name="keyword" placeholder="검색어">
+    <button type="submit">검색</button>
+</form>
+
+<!-- 🔹 정렬 -->
+<form action="/sort" method="POST">
+    <button name="column" value="date">날짜 정렬</button>
+    <button name="column" value="content">내용 정렬</button>
+</form>
+
+<!-- 🔹 카테고리 필터 -->
+<form action="/filter" method="POST">
+    <button name="category" value="all">전체</button>
+    <button name="category" value="active">진행중</button>
+    <button name="category" value="completed">완료</button>
+</form>
+
+<hr>
+
+<!-- 🔹 리스트 영역 (여기 Jinja 넣으면 됨) -->
+<div id="todo-list">
+
+    <!-- 예시 구조 (반복될 영역) -->
+    <div class="todo-item">
+        <strong>할일 내용</strong> (날짜)
+
+        <div class="controls">
+
+            <!-- 완료 토글 -->
+            <form action="/toggle" method="POST" style="display:inline;">
+                <input type="hidden" name="id" value="1">
+                <button type="submit">완료/취소</button>
+            </form>
+
+            <!-- 삭제 -->
+            <form action="/delete" method="POST" style="display:inline;">
+                <input type="hidden" name="id" value="1">
+                <button type="submit">삭제</button>
+            </form>
+
+            <!-- 수정 -->
+            <form action="/update" method="POST" style="display:inline;">
+                <input type="hidden" name="id" value="1">
+                <input type="text" name="content" placeholder="수정">
+                <button type="submit">수정</button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
