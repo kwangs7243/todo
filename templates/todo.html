@@ -78,32 +78,41 @@
 <div id="todo-list">
 
     <!-- 예시 구조 (반복될 영역) -->
-    <div class="todo-item">
-        <strong>할일 내용</strong> (날짜)
+    {%if data %}
+        {% for item in data %}
+            <div class="todo-item">
+                <strong>{{ item.content }}</strong> ({{ item.date }})
+                    {% if item.category == "completed" %}
+                        <span class="completed">[완료]</span>
+                    {% else %}
+                        <span>[진행중]</span>
+                    {% endif %}
+                <div class="controls">
 
-        <div class="controls">
+                    <!-- 완료 토글 -->
+                    <form action="/toggle" method="POST" style="display:inline;">
+                        <input type="hidden" name="id" value="{{item.original_idx}}">
+                        <button type="submit">완료/취소</button>
+                    </form>
 
-            <!-- 완료 토글 -->
-            <form action="/toggle" method="POST" style="display:inline;">
-                <input type="hidden" name="id" value="1">
-                <button type="submit">완료/취소</button>
-            </form>
+                    <!-- 삭제 -->
+                    <form action="/delete" method="POST" style="display:inline;">
+                        <input type="hidden" name="id" value="{{item.original_idx}}">
+                        <button type="submit">삭제</button>
+                    </form>
 
-            <!-- 삭제 -->
-            <form action="/delete" method="POST" style="display:inline;">
-                <input type="hidden" name="id" value="1">
-                <button type="submit">삭제</button>
-            </form>
-
-            <!-- 수정 -->
-            <form action="/update" method="POST" style="display:inline;">
-                <input type="hidden" name="id" value="1">
-                <input type="text" name="content" placeholder="수정">
-                <button type="submit">수정</button>
-            </form>
-
-        </div>
-    </div>
+                    <!-- 수정 -->
+                    <form action="/update" method="POST" style="display:inline;">
+                        <input type="hidden" name="id" value="{{item.original_idx}}">
+                        <input type="text" name="content" placeholder="수정">
+                        <button type="submit">수정</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>할일이 없습니다.</p>
+    {% endif %}
 
 </div>
 

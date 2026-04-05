@@ -1,5 +1,5 @@
 import datetime as dt
-class TodoMan:
+class TodoManager:
     def __init__(self):
         self.state = {
             "sort_column" : None,
@@ -21,7 +21,7 @@ class TodoMan:
         return
     def get_data(self):
         if not self.todos:
-            return
+            return []
         info=[]
         for idx,dic in enumerate(self.todos):
             new_dic = dic.copy()
@@ -101,4 +101,12 @@ class TodoMan:
         view_data = self.category_data(view_data)
         view_data = self.sorted_data(view_data)
         return view_data
+    def reset_state(self):
+        self.state = {
+            "sort_column" : None,
+            "sort_direction" : None,
+            "category" : "active",
+            "keyword" : None
+        }
+        return
 
